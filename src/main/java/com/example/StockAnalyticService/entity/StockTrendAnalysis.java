@@ -22,29 +22,28 @@ import lombok.Setter;
 public class StockTrendAnalysis extends BaseModel{
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="stock_id",nullable = false,unique = true)
+    @JoinColumn(name = "stock_id", nullable = false, unique = true)
     private Stock stock;
 
-    @Column(nullable = false)
+    @Column(name = "trend", nullable = false)
     private String trend;
-    // BULLISH, BEARISH, SIDEWAYS
 
+    @Column(name = "momentum")
     private String momentum;
-    // STRONG, WEAK, NEUTRAL
-    
-    @Column(precision = 19, scale = 6)
+
+    @Column(name = "support_level", precision = 19, scale = 6)
     private BigDecimal supportLevel;
 
-    @Column(precision = 19, scale = 6)
+    @Column(name = "resistance_level", precision = 19, scale = 6)
     private BigDecimal resistanceLevel;
 
-    @Column(precision = 19, scale = 6)
-    private BigDecimal breakoutSignal;
+    @Column(name = "breakout_signal")
+    private Boolean breakoutSignal;
 
     @Column(precision = 19, scale = 6)
     private BigDecimal volatility;
 
-    @Column(precision = 19, scale = 6)
+    @Column(name = "trend_strength", precision = 19, scale = 6)
     private BigDecimal trendStrength;
     
 }

@@ -27,24 +27,23 @@ public class StockRecommendation extends BaseModel{
     @JoinColumn(name = "stock_id", nullable = false, unique = true)
     private Stock stock;
 
-    @Column(nullable = false)
+    @Column(name = "recommendation", nullable = false)
     private String recommendation;
-    // BUY, SELL, HOLD
 
-    @Column(nullable = false)
-    private Double confidence;
-    // 0 to 100
+    @Column(name = "confidence", nullable = false, precision = 5, scale = 2)
+    private BigDecimal confidence;
 
+    @Column(name = "reason")
     private String reason;
     // explanation
 
-    @Column(precision = 19, scale = 6)
+    @Column(name = "target_price", precision = 19, scale = 6)
     private BigDecimal targetPrice;
 
-    @Column(precision = 19, scale = 6)
+    @Column(name = "stop_loss", precision = 19, scale = 6)
     private BigDecimal stopLoss;
 
-    @Column(precision = 19, scale = 6)
+    @Column(name = "risk_reward_ratio", precision = 19, scale = 6)
     private BigDecimal riskRewardRatio;
     
 }

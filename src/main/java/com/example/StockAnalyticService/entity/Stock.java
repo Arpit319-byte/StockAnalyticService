@@ -15,7 +15,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "stock_prices")
+@Table(name = "stocks")
 public class Stock extends BaseModel{
 
     @Column(name = "symbol", nullable = false)
@@ -31,7 +31,7 @@ public class Stock extends BaseModel{
     @Column(name="segment", nullable = false)
     private String segment;
 
-    @Column(name ="isactive", nullable = false)
+    @Column(name = "is_active", nullable = false)
     private Boolean isActive;
 
     
