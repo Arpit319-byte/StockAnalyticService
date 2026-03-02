@@ -5,6 +5,7 @@ import java.math.MathContext;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -70,13 +71,18 @@ public class TechnicalIndicatorService {
         indicator.setSma50(computeSMA(closes,50));
         indicator.setSma200(computeSMA(closes,200));
 
+        List<BigDecimal> ema20List = computeEMA(closes, 20);
+        List<BigDecimal> ema50List = computeEMA(closes, 50);
+        List<BigDecimal> ema200List = computeEMA(closes, 200);
+        indicator.setEma20(ema20List.isEmpty() ? null : ema20List.get(ema20List.size() - 1));
+        indicator.setEma50(ema50List.isEmpty() ? null : ema50List.get(ema50List.size() - 1));
+        indicator.setEma200(ema200List.isEmpty() ? null : ema200List.get(ema200List.size() - 1));
+
+
+
         return Optional.of(technicalIndicatorRepository.save(indicator));
                
     }
-
-
-
-
 
 
 
@@ -92,6 +98,27 @@ public class TechnicalIndicatorService {
             sum=sum.add(closes.get(i));
         }
         return  sum.divide(BigDecimal.valueOf(period), MC).setScale(SCALE,RoundingMode.HALF_UP);
+    }
+
+    private List<BigDecimal> computeEMA(List<BigDecimal> closes,int period){
+
+        if(closes.size()<period){
+            log.info("Closes size {} is less than the period {}",closes.size(),period);
+            return null;
+        }
+            
+        BigDecimal ema=computeSMA(closes.subList(0, period), period);
+        BigDecimal multiplier=BigDecimal.valueOf(2).divide(BigDecimal.valueOf(period + 1), MC);
+        List<BigDecimal> emaList = new ArrayList<>();
+
+        if (ema == null) return emaList;
+         emaList.add(ema);
+        for (int i = period; i < closes.size(); i++) {
+        ema = closes.get(i).multiply(multiplier).add(ema.multiply(BigDecimal.ONE.subtract(multiplier)));
+        emaList.add(ema.setScale(SCALE, RoundingMode.HALF_UP));
+       }
+       
+        return emaList;
     }
 
     
